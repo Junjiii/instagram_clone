@@ -23,4 +23,6 @@ public class Hashtag extends BaseTimeEntity {
     public Hashtag(String hashtag) {
         this.hashtag = hashtag;
     }
+
+    // == 연관 관계 메서드 ==//
 }

@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -28,4 +30,5 @@ public class PostImage extends BaseTimeEntity {
         this.image_URL = image_URL;
         this.sequence = sequence;
     }
+
 }

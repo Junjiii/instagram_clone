@@ -4,6 +4,7 @@ package instagram.instagram.domain.post;
 import instagram.instagram.domain.baseEntity.BaseTimeEntity;
 import instagram.instagram.domain.hashtag.Hashtag;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -26,8 +27,10 @@ public class PostHashtag extends BaseTimeEntity {
     @JoinColumn(name = "hashtag_id")
     private Hashtag hashtag;
 
+    @Builder
     public PostHashtag(Post post, Hashtag hashtag) {
         this.post = post;
         this.hashtag = hashtag;
     }
+
 }

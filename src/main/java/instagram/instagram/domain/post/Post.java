@@ -30,7 +30,7 @@ public class Post extends BaseTimeEntity {
     private List<PostImage> postImages = new ArrayList<>();
 
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
-    private List<PostHashtag> hashtagList = new ArrayList<>();
+    private List<PostHashtag> postHashtags = new ArrayList<>();
 
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
     private List<PostLike> postLikes = new ArrayList<>();
@@ -39,4 +39,23 @@ public class Post extends BaseTimeEntity {
     private List<Comment> comments = new ArrayList<>();
 
 
+    public Post(String content, Member member) {
+        this.content = content;
+        this.member = member;
+    }
+
+
+    // == 연관 관계 메서드 ==//
+
+    public void addPostImages(List<String> imageUrls) {
+        int sequence = 1;
+        for (String imageUrl : imageUrls) {
+            postImages.add(new PostImage(this, imageUrl, sequence));
+            sequence++;
+        }
+    }
+
+    public void addPostHashTags(PostHashtag postHashtag) {
+        postHashtags.add(postHashtag);
+    }
 }
