@@ -1,5 +1,6 @@
-package instagram.instagram.domain;
+package instagram.instagram.domain.hashtag;
 
+import instagram.instagram.domain.baseEntity.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Hashtag extends BaseTimeEntity{
+public class Hashtag extends BaseTimeEntity {
 
     @Id
     @GeneratedValue
@@ -18,4 +19,8 @@ public class Hashtag extends BaseTimeEntity{
     private Long id;
 
     private String hashtag;
+
+    public Hashtag(String hashtag) {
+        this.hashtag = hashtag;
+    }
 }

@@ -1,4 +1,4 @@
-package instagram.instagram.domain;
+package instagram.instagram.domain.baseEntity;
 
 
 import jakarta.persistence.Column;

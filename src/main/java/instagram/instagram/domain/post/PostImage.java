@@ -1,5 +1,6 @@
-package instagram.instagram.domain;
+package instagram.instagram.domain.post;
 
+import instagram.instagram.domain.baseEntity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,4 +22,10 @@ public class PostImage extends BaseTimeEntity {
     private String image_URL;
 
     private int sequence;
+
+    public PostImage(Post post, String image_URL, int sequence) {
+        this.post = post;
+        this.image_URL = image_URL;
+        this.sequence = sequence;
+    }
 }

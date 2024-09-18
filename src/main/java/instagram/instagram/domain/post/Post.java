@@ -1,5 +1,8 @@
-package instagram.instagram.domain;
+package instagram.instagram.domain.post;
 
+import instagram.instagram.domain.baseEntity.BaseTimeEntity;
+import instagram.instagram.domain.comment.Comment;
+import instagram.instagram.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +13,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Post extends BaseTimeEntity{
+public class Post extends BaseTimeEntity {
 
     @Id
     @GeneratedValue
@@ -34,5 +37,6 @@ public class Post extends BaseTimeEntity{
 
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
+
 
 }

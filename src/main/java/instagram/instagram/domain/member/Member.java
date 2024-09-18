@@ -1,8 +1,10 @@
-package instagram.instagram.domain;
+package instagram.instagram.domain.member;
 
+import instagram.instagram.domain.baseEntity.BaseTimeEntity;
+import instagram.instagram.domain.follow.Follow;
+import instagram.instagram.domain.post.Post;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.util.Assert;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -61,8 +63,6 @@ public class Member extends BaseTimeEntity {
         this.nickname = nickname;
     }
 
-
-
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
     }
@@ -78,4 +78,30 @@ public class Member extends BaseTimeEntity {
         this.followings.add(following);
         toMember.getFollowers().add(following);
     }
+
+
+    /**
+     * remove follower
+     */
+    public void removeFollower(Member fromMember) {
+        Follow targetFollower = this.followers.stream()
+                .filter(follow -> follow.getFromMember().equals(fromMember))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("일치하는 팔로워 유저가 없습니다."));
+
+        this.followers.remove(targetFollower);
+    }
+
+    /**
+     * remove following
+     */
+    public void removeFollowing(Member toMember) {
+        Follow targetFollowing = this.followings.stream()
+                .filter(follow -> follow.getToMember().equals(toMember))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("일치하는 팔로잉 유저가 없습니다."));
+
+        this.followings.remove(targetFollowing);
+    }
+
 }
