@@ -79,6 +79,10 @@ public class Member extends BaseTimeEntity {
         toMember.getFollowers().add(following);
     }
 
+    public void addPosts(Post post) {
+        this.posts.add(post);
+    }
+
 
     /**
      * remove follower

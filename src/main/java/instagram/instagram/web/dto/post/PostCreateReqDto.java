@@ -8,20 +8,17 @@ import java.util.List;
 public class PostCreateReqDto {
 
     private String content;
-    private Long memberId;
     private List<String> imageUrls;
     private List<String> hashtags;
 
 
-    public PostCreateReqDto(String content, Long memberId, List<String> imageUrls) {
+    public PostCreateReqDto(String content, List<String> imageUrls) {
         this.content = content;
-        this.memberId = memberId;
         this.imageUrls = imageUrls;
     }
 
-    public PostCreateReqDto(String content, Long memberId, List<String> imageUrls, List<String> hashtags) {
+    public PostCreateReqDto(String content,  List<String> imageUrls, List<String> hashtags) {
         this.content = content;
-        this.memberId = memberId;
         this.imageUrls = imageUrls;
         this.hashtags = hashtags;
     }
