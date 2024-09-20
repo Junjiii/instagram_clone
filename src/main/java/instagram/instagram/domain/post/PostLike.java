@@ -3,6 +3,7 @@ package instagram.instagram.domain.post;
 import instagram.instagram.domain.baseEntity.BaseTimeEntity;
 import instagram.instagram.domain.member.Member;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,4 +25,9 @@ public class PostLike extends BaseTimeEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
+
+    public PostLike(Post post, Member member) {
+        this.post = post;
+        this.member = member;
+    }
 }

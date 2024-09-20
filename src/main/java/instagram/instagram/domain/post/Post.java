@@ -47,15 +47,16 @@ public class Post extends BaseTimeEntity {
 
     // == 연관 관계 메서드 ==//
 
-    public void addPostImages(List<String> imageUrls) {
-        int sequence = 1;
-        for (String imageUrl : imageUrls) {
-            postImages.add(new PostImage(this, imageUrl, sequence));
-            sequence++;
-        }
+    public void addPostImages(String imageUrl, int sequence) {
+        postImages.add(new PostImage(this, imageUrl, sequence));
     }
 
     public void addPostHashTags(PostHashtag postHashtag) {
         postHashtags.add(postHashtag);
+    }
+
+    public void addPostLikes(Member member) {
+        PostLike postLike = new PostLike(this, member);
+        this.postLikes.add(postLike);
     }
 }

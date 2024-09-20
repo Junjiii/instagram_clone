@@ -19,6 +19,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final FollowRepository followRepository;
 
+    @Transactional
     public Member join(MemberJoinReqDto memberJoinReqDto) {
 
         checkDuplicateMember(memberJoinReqDto);
@@ -34,6 +35,8 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
+
+    @Transactional
     public void unFollow(Long fromMemberId, Long toMemberId) {
         Member fromMember = memberRepository.findById(fromMemberId).get(); // 사용 중인 유저
         Member toMember = memberRepository.findById(toMemberId).get(); // 사용 중인 유저가 팔로우 하는 유저

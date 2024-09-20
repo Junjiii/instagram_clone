@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PostService {
 
@@ -23,17 +23,30 @@ public class PostService {
     private final PostRepository postRepository;
     private final HashtagRepository hashtagRepository;
 
+
+    @Transactional
     public Post createPost(Long memberId,PostCreateReqDto postCreateReqDto) {
         Member member = memberRepository.findById(memberId).
                 orElseThrow(() -> new IllegalArgumentException("일치하는 유저가 없습니다."));
 
         Post post = new Post(postCreateReqDto.getContent(), member);
-        post.addPostImages(postCreateReqDto.getImageUrls());
 
+        // image
+        if(!postCreateReqDto.getImageUrls().isEmpty()) {
+            int sequence = 1;
+            for(String imageUrl : postCreateReqDto.getImageUrls()) {
+                post.addPostImages(imageUrl,sequence);
+                sequence++;
+            }
+        } else {
+            throw new IllegalArgumentException("이미지 1개는 필수 입니다.");
+        }
+
+
+        // hashtag
         if(!postCreateReqDto.getHashtags().isEmpty()) {
             for(String hashtag : postCreateReqDto.getHashtags()) {
-                PostHashtag postHashtag = createPostHashtag(post, hashtag);
-                post.addPostHashTags(postHashtag);
+                createPostHashtag(post, hashtag);
             }
         }
 
@@ -44,17 +57,26 @@ public class PostService {
     }
 
 
-
-    public PostHashtag createPostHashtag(Post post,String hashtag) {
+    @Transactional
+    public void createPostHashtag(Post post,String hashtag) {
         Hashtag findHashtag = hashtagRepository.findByHashtag(hashtag);
 
         PostHashtag.PostHashtagBuilder builder = PostHashtag.builder().post(post);
 
         if (findHashtag != null) {
-            return builder.hashtag(findHashtag).build();
+            post.addPostHashTags(builder.hashtag(findHashtag).build());
         } else {
             Hashtag savedHashtag = hashtagRepository.save(new Hashtag(hashtag));
-            return builder.hashtag(savedHashtag).build();
+            post.addPostHashTags(builder.hashtag(savedHashtag).build());
         }
+    }
+
+
+    @Transactional
+    public void createPostLike(Long postId, Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("일치하는 유저가 없습니다."));
+        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("일치하는 포스트가 없습니다."));
+
+        post.addPostLikes(member);
     }
 }
