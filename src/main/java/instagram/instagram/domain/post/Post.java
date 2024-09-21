@@ -59,4 +59,8 @@ public class Post extends BaseTimeEntity {
         PostLike postLike = new PostLike(this, member);
         this.postLikes.add(postLike);
     }
+
+    public void addComments(Comment comment) {
+        this.comments.add(comment);
+    }
 }

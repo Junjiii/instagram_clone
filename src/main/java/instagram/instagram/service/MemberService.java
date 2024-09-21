@@ -38,8 +38,8 @@ public class MemberService {
 
     @Transactional
     public void unFollow(Long fromMemberId, Long toMemberId) {
-        Member fromMember = memberRepository.findById(fromMemberId).get(); // 사용 중인 유저
-        Member toMember = memberRepository.findById(toMemberId).get(); // 사용 중인 유저가 팔로우 하는 유저
+        Member fromMember = memberRepository.findById(fromMemberId).orElseThrow(() -> new IllegalArgumentException("일치하는 유저가 없습니다.")); // 사용 중인 유저
+        Member toMember = memberRepository.findById(toMemberId).orElseThrow(() -> new IllegalArgumentException("일치하는 유저가 없습니다."));; // 사용 중인 유저가 팔로우 하는 유저
 
         fromMember.removeFollowing(toMember);
         toMember.removeFollower(fromMember);
