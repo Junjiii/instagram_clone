@@ -6,7 +6,6 @@ import instagram.instagram.domain.member.Member;
 import instagram.instagram.domain.member.MemberRepository;
 import instagram.instagram.web.dto.member.MemberJoinReqDto;
 import jakarta.persistence.EntityManager;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-@Rollback(value = true)
 class MemberServiceTest {
 
     @Autowired MemberService memberService;

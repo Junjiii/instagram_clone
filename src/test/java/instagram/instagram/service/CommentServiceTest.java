@@ -11,6 +11,7 @@ import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,29 +38,11 @@ class CommentServiceTest {
 
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     public void 코멘트_생성() throws Exception
     {
-        MemberJoinReqDto memberJoinReqDto = new MemberJoinReqDto(
-                "email@gmail.com",
-                "password",
-                "user1",
-                "010-1111-1111",
-                "male",
-                2024,
-                9,
-                17);
-        Member member = memberService.join(memberJoinReqDto);
-
-
-        ArrayList<String> imageUrls = new ArrayList<>();
-        imageUrls.add("url1");
-
-        ArrayList<String> hashtags = new ArrayList<>();
-        hashtags.add("#Hashtag1");
-
-        PostCreateReqDto postCreateReqDto = new PostCreateReqDto("post1", imageUrls, hashtags);
-
-        Post post = postService.createPost(member.getId(), postCreateReqDto);
+        Member member = createMemberDto("email@gmail.com", "user");
+        Post post = createPostDto("content", 1, 1, member.getId());
 
         Comment comment = commentService.createComment(member.getId(), post.getId(), "comment1");
 
@@ -82,38 +65,9 @@ class CommentServiceTest {
     @Test
     public void 코멘트_코멘트_라이크_생성() throws Exception
     {
-        MemberJoinReqDto memberJoinReqDto1 = new MemberJoinReqDto(
-                "email@gmail.com",
-                "password",
-                "user1",
-                "010-1111-1111",
-                "male",
-                2024,
-                9,
-                17);
-
-        MemberJoinReqDto memberJoinReqDto2 = new MemberJoinReqDto(
-                "email2@gmail.com",
-                "password",
-                "user2",
-                "010-1111-1111",
-                "male",
-                2024,
-                9,
-                17);
-        Member member1 = memberService.join(memberJoinReqDto1);
-        Member member2 = memberService.join(memberJoinReqDto2);
-
-
-        ArrayList<String> imageUrls = new ArrayList<>();
-        imageUrls.add("url1");
-
-        ArrayList<String> hashtags = new ArrayList<>();
-        hashtags.add("#Hashtag1");
-
-        PostCreateReqDto postCreateReqDto = new PostCreateReqDto("post1", imageUrls, hashtags);
-
-        Post post = postService.createPost(member1.getId(), postCreateReqDto);
+        Member member1 = createMemberDto("email1@gmail.com", "user1");
+        Member member2 = createMemberDto("email2@gmail.com", "user2");
+        Post post = createPostDto("content", 1, 1, member1.getId());
 
         Comment comment = commentService.createComment(member2.getId(), post.getId(), "commentByMember2");
 
@@ -134,42 +88,9 @@ class CommentServiceTest {
     @Test
     public void 코멘트_라이크_예외() throws Exception
     {
-        MemberJoinReqDto memberJoinReqDto1 = new MemberJoinReqDto(
-                "email1@gmail.com",
-                "password",
-                "user1",
-                "010-1111-1111",
-                "male",
-                2024,
-                9,
-                17);
-
-
-        MemberJoinReqDto memberJoinReqDto2 = new MemberJoinReqDto(
-                "email2@gmail.com",
-                "password",
-                "user2",
-                "010-1111-1111",
-                "male",
-                2024,
-                9,
-                17);
-
-        Member member1 = memberService.join(memberJoinReqDto1);
-        Member member2 = memberService.join(memberJoinReqDto2);
-
-
-
-
-        ArrayList<String> imageUrls = new ArrayList<>();
-        imageUrls.add("url1");
-
-        ArrayList<String> hashtags = new ArrayList<>();
-        hashtags.add("#Hashtag1");
-
-        PostCreateReqDto postCreateReqDto = new PostCreateReqDto("post1", imageUrls, hashtags);
-
-        Post post = postService.createPost(member1.getId(), postCreateReqDto);
+        Member member1 = createMemberDto("email1@gmail.com", "user1");
+        Member member2 = createMemberDto("email2@gmail.com", "user2");
+        Post post = createPostDto("content", 1, 1, member1.getId());
 
         Comment comment = commentService.createComment(member2.getId(), post.getId(), "commentByMember2");
 
@@ -182,6 +103,38 @@ class CommentServiceTest {
             commentService.createCommentLike(member2.getId(),comment.getId());
         });
 
+    }
+
+    public Member createMemberDto(String email, String name) {
+        MemberJoinReqDto memberJoinReqDto = new MemberJoinReqDto(
+                email,
+                "password",
+                name,
+                "010-1111-1111",
+                "male",
+                2024,
+                11,
+                11
+        );
+
+        return memberService.join(memberJoinReqDto);
+    }
+
+
+    public Post createPostDto(String content ,int urlSequence, int hashtagSequence, Long memberId) {
+        ArrayList<String> imageUrls = new ArrayList<>();
+        ArrayList<String> hashtags = new ArrayList<>();
+
+        for (int i = 1; i < urlSequence+1; i++) {
+            imageUrls.add("url" + i);
+        }
+
+        for (int i = 1; i < hashtagSequence+1; i++) {
+            hashtags.add("#Hashtag" + i);
+        }
+
+        PostCreateReqDto postCreateReqDto = new PostCreateReqDto(content, imageUrls, hashtags);
+        return postService.createPost(memberId, postCreateReqDto);
     }
 
 
