@@ -6,9 +6,11 @@ import instagram.instagram.domain.member.Member;
 import instagram.instagram.domain.member.MemberRepository;
 import instagram.instagram.web.dto.member.MemberJoinReqDto;
 import jakarta.persistence.EntityManager;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -18,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
+@Rollback(value = true)
 class MemberServiceTest {
 
     @Autowired MemberService memberService;
@@ -33,15 +36,7 @@ class MemberServiceTest {
     public void 회원가입() throws Exception
     {
         // given
-        MemberJoinReqDto memberJoinReqDto = new MemberJoinReqDto(
-                "email@gmail.com",
-                "password",
-                "user1",
-                "010-1111-1111",
-                "male",
-                2024,
-                9,
-                17);
+        MemberJoinReqDto memberJoinReqDto = createDto("email@gmamil.com", "user");
         Member joinMember = memberService.join(memberJoinReqDto);
 
         // when
@@ -56,7 +51,7 @@ class MemberServiceTest {
         assertThat(findMember.getName()).isEqualTo(memberJoinReqDto.getName());
         assertThat(findMember.getPhoneNumber()).isEqualTo(memberJoinReqDto.getPhoneNumber());
         assertThat(findMember.getGender()).isEqualTo(Gender.MALE);
-        assertThat(findMember.getBirth()).isEqualTo(LocalDate.of(2024,9,17));
+        assertThat(findMember.getBirth()).isEqualTo(LocalDate.of(2024,11,11));
         // 최초 생성시 nickname의 default 값은 기본 name 값
         assertThat(findMember.getName()).isEqualTo(findMember.getNickname());
     }
@@ -66,30 +61,13 @@ class MemberServiceTest {
     public void 중복_회원() throws Exception
     {
         // given
-        MemberJoinReqDto memberJoinReqDto1 = new MemberJoinReqDto(
-                "email@gmail.com",
-                "password",
-                "user1",
-                "010-1111-1111",
-                "male",
-                2024,
-                9,
-                17);
+        MemberJoinReqDto memberJoinReqDto1 = createDto("email1@gmail.com", "user1");
         Member member1 = memberService.join(memberJoinReqDto1);
 
         em.flush();
         em.clear();
 
-        MemberJoinReqDto memberJoinReqDto2 = new MemberJoinReqDto(
-                "email@gmail.com",
-                "password",
-                "user1",
-                "010-1111-1111",
-                "male",
-                2024,
-                9,
-                17);
-
+        MemberJoinReqDto memberJoinReqDto2 = createDto("email1@gmail.com", "user1");
 
         assertThrows(IllegalStateException.class, () -> {
             memberService.join(memberJoinReqDto2);
@@ -101,15 +79,8 @@ class MemberServiceTest {
     @Test
     public void 추후_데이터추가() throws Exception
     {
-        MemberJoinReqDto memberJoinReqDto = new MemberJoinReqDto(
-                "email@gmail.com",
-                "password",
-                "user1",
-                "010-1111-1111",
-                "male",
-                2024,
-                9,
-                17);
+
+        MemberJoinReqDto memberJoinReqDto = createDto("email@gmail.com", "user");
         Member joinMember = memberService.join(memberJoinReqDto);
 
         // 추후 데이터 변경 ( 닉네임 설정, 프로필 이미지 설정, Bio 설정 )
@@ -134,16 +105,16 @@ class MemberServiceTest {
     @Test
     public void 멤버_팔로우() throws Exception
     {
-        Member member1 = new Member("user1");
-        Member member2 = new Member("user2");
-        Member member3 = new Member("user3");
-        Member member4 = new Member("user4");
+        MemberJoinReqDto memberJoinReqDto1 = createDto("email1@gmail.com", "user1");
+        MemberJoinReqDto memberJoinReqDto2 = createDto("email2@gmail.com", "user2");
+        MemberJoinReqDto memberJoinReqDto3 = createDto("email3@gmail.com", "user3");
+        MemberJoinReqDto memberJoinReqDto4 = createDto("email4@gmail.com", "user4");
 
+        Member member1 = memberService.join(memberJoinReqDto1);
+        Member member2 = memberService.join(memberJoinReqDto2);
+        Member member3 = memberService.join(memberJoinReqDto3);
+        Member member4 = memberService.join(memberJoinReqDto4);
 
-        memberRepository.save(member1);
-        memberRepository.save(member2);
-        memberRepository.save(member3);
-        memberRepository.save(member4);
 
         // member1 -> member2,3,4 팔로우
         memberService.follow(member1.getId(), member2.getId());
@@ -178,12 +149,12 @@ class MemberServiceTest {
     @Test
     public void 멤버_팔로우_중복팔로예외() throws Exception
     {
-        Member member1 = new Member("user1");
-        Member member2 = new Member("user2");
+        MemberJoinReqDto memberJoinReqDto1 = createDto("email1@gmail.com", "user1");
+        MemberJoinReqDto memberJoinReqDto2 = createDto("email2@gmail.com", "user2");
 
 
-        memberRepository.save(member1);
-        memberRepository.save(member2);
+        Member member1 = memberService.join(memberJoinReqDto1);
+        Member member2 = memberService.join(memberJoinReqDto2);
 
         // member1 -> member2,3,4 팔로우
         memberService.follow(member1.getId(), member2.getId());
@@ -204,10 +175,15 @@ class MemberServiceTest {
     @Test
     public void 멤버_언팔로우() throws Exception
     {
-        Member member1 = new Member("user1");
-        Member member2 = new Member("user2");
-        Member member3 = new Member("user3");
-        Member member4 = new Member("user4");
+        MemberJoinReqDto memberJoinReqDto1 = createDto("email1@gmail.com", "user1");
+        MemberJoinReqDto memberJoinReqDto2 = createDto("email2@gmail.com", "user2");
+        MemberJoinReqDto memberJoinReqDto3 = createDto("email3@gmail.com", "user3");
+        MemberJoinReqDto memberJoinReqDto4 = createDto("email4@gmail.com", "user4");
+
+        Member member1 = memberService.join(memberJoinReqDto1);
+        Member member2 = memberService.join(memberJoinReqDto2);
+        Member member3 = memberService.join(memberJoinReqDto3);
+        Member member4 = memberService.join(memberJoinReqDto4);
 
         // member1 -> member2,3,4 팔로우
         member1.addFollowing(member2);
@@ -218,6 +194,10 @@ class MemberServiceTest {
         memberRepository.save(member2);
         memberRepository.save(member3);
         memberRepository.save(member4);
+
+        // 영속성 컨텍스트 날리기
+        em.flush();
+        em.clear();
 
         // member1 -> member2,3,4, 언팔로우
         memberService.unFollow(member1.getId(), member2.getId());
@@ -246,28 +226,43 @@ class MemberServiceTest {
     @Test
     public void 멤버_언팔로우_예외() throws Exception
     {
-        Member member1 = new Member("user1");
-        Member member2 = new Member("user2");
-        Member member3 = new Member("user3");
-        Member member4 = new Member("user4");
+        MemberJoinReqDto memberJoinReqDto1 = createDto("email1@gmail.com", "user1");
+        MemberJoinReqDto memberJoinReqDto2 = createDto("email2@gmail.com", "user2");
+        MemberJoinReqDto memberJoinReqDto3 = createDto("email3@gmail.com", "user3");
+        MemberJoinReqDto memberJoinReqDto4 = createDto("email4@gmail.com", "user4");
+
+        Member member1 = memberService.join(memberJoinReqDto1);
+        Member member2 = memberService.join(memberJoinReqDto2);
+        Member member3 = memberService.join(memberJoinReqDto3);
+        Member member4 = memberService.join(memberJoinReqDto4);
 
         // member1 -> member2 팔로우
         member1.addFollowing(member2);
 
-        memberRepository.save(member1);
-        memberRepository.save(member2);
-        memberRepository.save(member3);
-        memberRepository.save(member4);
+        // 영속성 컨텍스트 날리기
+        em.flush();
+        em.clear();
 
 
         // member1 -> member3 언팔로우 ( 예외 터짐 )
         assertThrows(IllegalArgumentException.class, () -> {
             memberService.unFollow(member1.getId(), member3.getId());
         });
-
-
     }
 
 
 
+    public MemberJoinReqDto createDto(String email,String name) {
+        return new MemberJoinReqDto(
+                email,
+                "password",
+                name,
+                "010-1111-1111",
+                "male",
+                2024,
+                11,
+                11
+        );
+    }
 }
+
