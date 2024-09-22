@@ -35,6 +35,24 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
+    @Transactional
+    public void follow(Long fromMemberId, Long toMemberId) {
+
+        if(fromMemberId.equals(toMemberId)) {
+            throw new IllegalArgumentException("본인을 직접 팔로우 할 수 없습니다.");
+        }
+
+        Member fromMember = memberRepository.findById(fromMemberId).orElseThrow(() -> new IllegalArgumentException("일치하는 유저가 없습니다.")); // 사용 중인 유저
+        Member toMember = memberRepository.findById(toMemberId).orElseThrow(() -> new IllegalArgumentException("일치하는 유저가 없습니다."));; // 사용 중인 유저가 팔로우 하는 유저
+
+
+        if(followRepository.findByFromMemberAndToMember(fromMember,toMember).isEmpty()) {
+            fromMember.addFollowing(toMember);
+        } else {
+            throw new IllegalArgumentException("이미 팔로우하는 유저입니다.");
+        }
+    }
+
 
     @Transactional
     public void unFollow(Long fromMemberId, Long toMemberId) {

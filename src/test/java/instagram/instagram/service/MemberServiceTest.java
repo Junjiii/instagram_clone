@@ -139,15 +139,17 @@ class MemberServiceTest {
         Member member3 = new Member("user3");
         Member member4 = new Member("user4");
 
-        // member1 -> member2,3,4 팔로우
-        member1.addFollowing(member2);
-        member1.addFollowing(member3);
-        member1.addFollowing(member4);
 
         memberRepository.save(member1);
         memberRepository.save(member2);
         memberRepository.save(member3);
         memberRepository.save(member4);
+
+        // member1 -> member2,3,4 팔로우
+        memberService.follow(member1.getId(), member2.getId());
+        memberService.follow(member1.getId(), member3.getId());
+        memberService.follow(member1.getId(), member4.getId());
+
 
         // 영속성 컨텍스트 날리기
         em.flush();
@@ -162,6 +164,41 @@ class MemberServiceTest {
         assertThat(user1.getFollowings().get(0)).isEqualTo(user2.getFollowers().get(0));
         assertThat(user1.getFollowings().get(1)).isEqualTo(user3.getFollowers().get(0));
         assertThat(user1.getFollowings().get(2)).isEqualTo(user4.getFollowers().get(0));
+    }
+
+    @Test
+    public void 멤버_팔로우_본인팔로우예외() throws Exception
+    {
+        Long fromMember = 1L;
+        Long toMember = 1L;
+
+        assertThrows(IllegalArgumentException.class, () -> memberService.follow(fromMember,toMember));
+    }
+
+    @Test
+    public void 멤버_팔로우_중복팔로예외() throws Exception
+    {
+        Member member1 = new Member("user1");
+        Member member2 = new Member("user2");
+
+
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        // member1 -> member2,3,4 팔로우
+        memberService.follow(member1.getId(), member2.getId());
+
+        // 영속성 컨텍스트 날리기
+        em.flush();
+        em.clear();
+
+        Member user1 = memberRepository.findById(member1.getId()).get();
+        Member user2 = memberRepository.findById(member2.getId()).get();
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            memberService.follow(member1.getId(), member2.getId());
+        });
+
     }
 
     @Test

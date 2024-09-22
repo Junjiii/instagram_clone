@@ -1,6 +1,8 @@
 package instagram.instagram.service;
 
 import instagram.instagram.domain.comment.Comment;
+import instagram.instagram.domain.comment.CommentLike;
+import instagram.instagram.domain.comment.CommentLikeRepository;
 import instagram.instagram.domain.comment.CommentRepository;
 import instagram.instagram.domain.member.Member;
 import instagram.instagram.domain.member.MemberRepository;
@@ -18,6 +20,7 @@ public class CommentService {
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
+    private final CommentLikeRepository commentLikeRepository;
 
     @Transactional
     public Comment createComment(Long memberId, Long postId, String content) {
@@ -35,6 +38,10 @@ public class CommentService {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("일치하는 유저가 없습니다."));
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("일치하는 코멘트가 없습니다."));
 
-        comment.addCommentLikes(member);
+        if (commentLikeRepository.findByCommentAndMember(comment, member).isEmpty()) {
+            comment.addCommentLikes(member);
+        } else {
+            throw new IllegalArgumentException("이미 라이크가 존재합니다.");
+        }
     }
 }
