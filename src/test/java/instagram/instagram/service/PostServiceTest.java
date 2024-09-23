@@ -146,7 +146,8 @@ class PostServiceTest {
         hashtags.add("#Hashtag5"); // 새로운 해쉬태그
 
         PostCreateReqDto postCreateReqDto = new PostCreateReqDto("content1", imageUrls, hashtags);
-        Post post = postService.createPost(user1.getId(), postCreateReqDto);
+        Long savedPostId = postService.createPost(user1.getId(), postCreateReqDto);
+        Post post = postRepository.findById(savedPostId).get();
 
 
         em.flush();
@@ -236,7 +237,8 @@ class PostServiceTest {
                 11
         );
 
-        return memberService.join(memberJoinReqDto);
+        Long savedMemberId = memberService.join(memberJoinReqDto);
+        return memberRepository.findById(savedMemberId).get();
     }
 
 
@@ -253,7 +255,8 @@ class PostServiceTest {
         }
 
         PostCreateReqDto postCreateReqDto = new PostCreateReqDto(content, imageUrls, hashtags);
-        return postService.createPost(memberId, postCreateReqDto);
+        Long savedPostId = postService.createPost(memberId, postCreateReqDto);
+        return postRepository.findById(savedPostId).get();
     }
 
 }

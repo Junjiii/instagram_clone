@@ -1,5 +1,6 @@
 package instagram.instagram.service;
 
+import instagram.instagram.domain.follow.Follow;
 import instagram.instagram.domain.follow.FollowRepository;
 import instagram.instagram.domain.member.Gender;
 import instagram.instagram.domain.member.Member;
@@ -20,7 +21,7 @@ public class MemberService {
     private final FollowRepository followRepository;
 
     @Transactional
-    public Member join(MemberJoinReqDto memberJoinReqDto) {
+    public Long join(MemberJoinReqDto memberJoinReqDto) {
 
         checkDuplicateMember(memberJoinReqDto);
 
@@ -32,11 +33,13 @@ public class MemberService {
                 Gender.of(memberJoinReqDto.getGender()),
                 LocalDate.of(memberJoinReqDto.getYear(), memberJoinReqDto.getMonth(), memberJoinReqDto.getDay()));
 
-        return memberRepository.save(member);
+        memberRepository.save(member);
+
+        return member.getId();
     }
 
     @Transactional
-    public void follow(Long fromMemberId, Long toMemberId) {
+    public Long follow(Long fromMemberId, Long toMemberId) {
 
         if(fromMemberId.equals(toMemberId)) {
             throw new IllegalArgumentException("본인을 직접 팔로우 할 수 없습니다.");
@@ -47,7 +50,10 @@ public class MemberService {
 
 
         if(followRepository.findByFromMemberAndToMember(fromMember,toMember).isEmpty()) {
-            fromMember.addFollowing(toMember);
+            Follow follow = fromMember.addFollowing(toMember);
+            followRepository.save(follow);
+            return follow.getId();
+
         } else {
             throw new IllegalArgumentException("이미 팔로우하는 유저입니다.");
         }

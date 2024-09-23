@@ -34,16 +34,26 @@ class MemberServiceTest {
     public void 회원가입() throws Exception
     {
         // given
-        MemberJoinReqDto memberJoinReqDto = createDto("email@gmamil.com", "user");
-        Member joinMember = memberService.join(memberJoinReqDto);
+        MemberJoinReqDto memberJoinReqDto = new MemberJoinReqDto(
+                "email@gmamil.com",
+                "password",
+                "user",
+                "010-1111-1111",
+                "male",
+                2024,
+                11,
+                11
+        );
+        Long savedMemberId = memberService.join(memberJoinReqDto);
+
 
         // when
         em.flush();
         em.clear();
-        Member findMember = memberRepository.findById(joinMember.getId()).get();
+        Member findMember = memberRepository.findById(savedMemberId).get();
 
         // then
-        assertThat(findMember.getId()).isEqualTo(joinMember.getId());
+        assertThat(findMember.getId()).isEqualTo(savedMemberId);
         assertThat(findMember.getEmail()).isEqualTo(memberJoinReqDto.getEmail());
         assertThat(findMember.getPassword()).isEqualTo(memberJoinReqDto.getPassword());
         assertThat(findMember.getName()).isEqualTo(memberJoinReqDto.getName());
@@ -59,16 +69,13 @@ class MemberServiceTest {
     public void 중복_회원() throws Exception
     {
         // given
-        MemberJoinReqDto memberJoinReqDto1 = createDto("email1@gmail.com", "user1");
-        Member member1 = memberService.join(memberJoinReqDto1);
+        Member member1 = createMemberDto("email1@gmail.com", "user1");
 
         em.flush();
         em.clear();
 
-        MemberJoinReqDto memberJoinReqDto2 = createDto("email1@gmail.com", "user1");
-
         assertThrows(IllegalStateException.class, () -> {
-            memberService.join(memberJoinReqDto2);
+            createMemberDto("email1@gmail.com", "user1");
         });
 
     }
@@ -78,8 +85,7 @@ class MemberServiceTest {
     public void 추후_데이터추가() throws Exception
     {
 
-        MemberJoinReqDto memberJoinReqDto = createDto("email@gmail.com", "user");
-        Member joinMember = memberService.join(memberJoinReqDto);
+        Member joinMember = createMemberDto("email@gmail.com", "user");
 
         // 추후 데이터 변경 ( 닉네임 설정, 프로필 이미지 설정, Bio 설정 )
         joinMember.setNickname("newNickname");
@@ -103,15 +109,10 @@ class MemberServiceTest {
     @Test
     public void 멤버_팔로우() throws Exception
     {
-        MemberJoinReqDto memberJoinReqDto1 = createDto("email1@gmail.com", "user1");
-        MemberJoinReqDto memberJoinReqDto2 = createDto("email2@gmail.com", "user2");
-        MemberJoinReqDto memberJoinReqDto3 = createDto("email3@gmail.com", "user3");
-        MemberJoinReqDto memberJoinReqDto4 = createDto("email4@gmail.com", "user4");
-
-        Member member1 = memberService.join(memberJoinReqDto1);
-        Member member2 = memberService.join(memberJoinReqDto2);
-        Member member3 = memberService.join(memberJoinReqDto3);
-        Member member4 = memberService.join(memberJoinReqDto4);
+        Member member1 = createMemberDto("email1@gmail.com", "user1");
+        Member member2 = createMemberDto("email2@gmail.com", "user2");
+        Member member3 = createMemberDto("email3@gmail.com", "user3");
+        Member member4 = createMemberDto("email4@gmail.com", "user4");
 
 
         // member1 -> member2,3,4 팔로우
@@ -147,12 +148,8 @@ class MemberServiceTest {
     @Test
     public void 멤버_팔로우_중복팔로예외() throws Exception
     {
-        MemberJoinReqDto memberJoinReqDto1 = createDto("email1@gmail.com", "user1");
-        MemberJoinReqDto memberJoinReqDto2 = createDto("email2@gmail.com", "user2");
-
-
-        Member member1 = memberService.join(memberJoinReqDto1);
-        Member member2 = memberService.join(memberJoinReqDto2);
+        Member member1 = createMemberDto("email1@gmail.com", "user1");
+        Member member2 = createMemberDto("email2@gmail.com", "user2");
 
         // member1 -> member2,3,4 팔로우
         memberService.follow(member1.getId(), member2.getId());
@@ -173,15 +170,11 @@ class MemberServiceTest {
     @Test
     public void 멤버_언팔로우() throws Exception
     {
-        MemberJoinReqDto memberJoinReqDto1 = createDto("email1@gmail.com", "user1");
-        MemberJoinReqDto memberJoinReqDto2 = createDto("email2@gmail.com", "user2");
-        MemberJoinReqDto memberJoinReqDto3 = createDto("email3@gmail.com", "user3");
-        MemberJoinReqDto memberJoinReqDto4 = createDto("email4@gmail.com", "user4");
+        Member member1 = createMemberDto("email1@gmail.com", "user1");
+        Member member2 = createMemberDto("email2@gmail.com", "user2");
+        Member member3 = createMemberDto("email3@gmail.com", "user3");
+        Member member4 = createMemberDto("email4@gmail.com", "user4");
 
-        Member member1 = memberService.join(memberJoinReqDto1);
-        Member member2 = memberService.join(memberJoinReqDto2);
-        Member member3 = memberService.join(memberJoinReqDto3);
-        Member member4 = memberService.join(memberJoinReqDto4);
 
         // member1 -> member2,3,4 팔로우
         member1.addFollowing(member2);
@@ -224,15 +217,11 @@ class MemberServiceTest {
     @Test
     public void 멤버_언팔로우_예외() throws Exception
     {
-        MemberJoinReqDto memberJoinReqDto1 = createDto("email1@gmail.com", "user1");
-        MemberJoinReqDto memberJoinReqDto2 = createDto("email2@gmail.com", "user2");
-        MemberJoinReqDto memberJoinReqDto3 = createDto("email3@gmail.com", "user3");
-        MemberJoinReqDto memberJoinReqDto4 = createDto("email4@gmail.com", "user4");
+        Member member1 = createMemberDto("email1@gmail.com", "user1");
+        Member member2 = createMemberDto("email2@gmail.com", "user2");
+        Member member3 = createMemberDto("email3@gmail.com", "user3");
+        Member member4 = createMemberDto("email4@gmail.com", "user4");
 
-        Member member1 = memberService.join(memberJoinReqDto1);
-        Member member2 = memberService.join(memberJoinReqDto2);
-        Member member3 = memberService.join(memberJoinReqDto3);
-        Member member4 = memberService.join(memberJoinReqDto4);
 
         // member1 -> member2 팔로우
         member1.addFollowing(member2);
@@ -250,8 +239,8 @@ class MemberServiceTest {
 
 
 
-    public MemberJoinReqDto createDto(String email,String name) {
-        return new MemberJoinReqDto(
+    public Member createMemberDto(String email, String name) {
+        MemberJoinReqDto memberJoinReqDto = new MemberJoinReqDto(
                 email,
                 "password",
                 name,
@@ -261,6 +250,9 @@ class MemberServiceTest {
                 11,
                 11
         );
+
+        Long savedMemberId = memberService.join(memberJoinReqDto);
+        return memberRepository.findById(savedMemberId).get();
     }
 }
 

@@ -4,7 +4,9 @@ import instagram.instagram.domain.comment.Comment;
 import instagram.instagram.domain.comment.CommentLikeRepository;
 import instagram.instagram.domain.comment.CommentRepository;
 import instagram.instagram.domain.member.Member;
+import instagram.instagram.domain.member.MemberRepository;
 import instagram.instagram.domain.post.Post;
+import instagram.instagram.domain.post.PostRepository;
 import instagram.instagram.web.dto.member.MemberJoinReqDto;
 import instagram.instagram.web.dto.post.PostCreateReqDto;
 import jakarta.persistence.EntityManager;
@@ -32,7 +34,11 @@ class CommentServiceTest {
     @Autowired
     CommentLikeRepository commentLikeRepository;
     @Autowired MemberService memberService;
+    @Autowired
+    MemberRepository memberRepository;
     @Autowired PostService postService;
+    @Autowired
+    PostRepository postRepository;
     @Autowired
     EntityManager em;
 
@@ -117,7 +123,9 @@ class CommentServiceTest {
                 11
         );
 
-        return memberService.join(memberJoinReqDto);
+        Long savedMemberId = memberService.join(memberJoinReqDto);
+        return memberRepository.findById(savedMemberId).get();
+
     }
 
 
@@ -134,7 +142,8 @@ class CommentServiceTest {
         }
 
         PostCreateReqDto postCreateReqDto = new PostCreateReqDto(content, imageUrls, hashtags);
-        return postService.createPost(memberId, postCreateReqDto);
+        Long savedPostId = postService.createPost(memberId, postCreateReqDto);
+        return postRepository.findById(savedPostId).get();
     }
 
 

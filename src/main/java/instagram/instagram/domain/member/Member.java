@@ -73,10 +73,11 @@ public class Member extends BaseTimeEntity {
 
 
     //== 연관관계 메서드 ==//
-    public void addFollowing(Member toMember) {
+    public Follow addFollowing(Member toMember) {
         Follow following = new Follow(this, toMember);
         this.followings.add(following);
         toMember.getFollowers().add(following);
+        return following;
     }
 
     public void addPosts(Post post) {

@@ -25,7 +25,7 @@ public class PostService {
 
 
     @Transactional
-    public Post createPost(Long memberId,PostCreateReqDto postCreateReqDto) {
+    public Long createPost(Long memberId,PostCreateReqDto postCreateReqDto) {
         Member member = memberRepository.findById(memberId).
                 orElseThrow(() -> new IllegalArgumentException("일치하는 유저가 없습니다."));
 
@@ -53,11 +53,10 @@ public class PostService {
         postRepository.save(post);
         member.addPosts(post);
 
-        return post;
+        return post.getId();
     }
 
 
-    @Transactional
     public void createPostHashtag(Post post,String hashtag) {
         Hashtag findHashtag = hashtagRepository.findByHashtag(hashtag);
 
