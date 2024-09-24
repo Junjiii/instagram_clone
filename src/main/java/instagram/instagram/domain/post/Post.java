@@ -1,5 +1,6 @@
 package instagram.instagram.domain.post;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import instagram.instagram.domain.baseEntity.BaseTimeEntity;
 import instagram.instagram.domain.comment.Comment;
 import instagram.instagram.domain.member.Member;
@@ -22,19 +23,24 @@ public class Post extends BaseTimeEntity {
 
     private String content;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
     private List<PostImage> postImages = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
     private List<PostHashtag> postHashtags = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
     private List<PostLike> postLikes = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 

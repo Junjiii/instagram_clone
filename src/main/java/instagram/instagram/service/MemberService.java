@@ -6,11 +6,13 @@ import instagram.instagram.domain.member.Gender;
 import instagram.instagram.domain.member.Member;
 import instagram.instagram.domain.member.MemberRepository;
 import instagram.instagram.web.dto.member.MemberJoinReqDto;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -19,6 +21,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final FollowRepository followRepository;
+    private final EntityManager em;
 
     @Transactional
     public Long join(MemberJoinReqDto memberJoinReqDto) {
@@ -36,6 +39,11 @@ public class MemberService {
         memberRepository.save(member);
 
         return member.getId();
+    }
+
+    public List<Member> findMember(Long id) {
+//        return em.createQuery("select m from Member m left join m.posts p left join p.postImages pi where m.id = :id", Member.class).setParameter("id",id).getResultList();
+        return em.createQuery("select m from Member m where m.id = :id",Member.class).setParameter("id",id).getResultList();
     }
 
     @Transactional

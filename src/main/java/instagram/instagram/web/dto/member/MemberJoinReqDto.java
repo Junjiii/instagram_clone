@@ -1,10 +1,14 @@
 package instagram.instagram.web.dto.member;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
+
+import java.util.List;
 
 @Getter
+@Setter
+@ToString
 @AllArgsConstructor
+@NoArgsConstructor
 public class MemberJoinReqDto {
     private String email;
     private String password;

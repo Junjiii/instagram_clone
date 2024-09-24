@@ -1,5 +1,6 @@
 package instagram.instagram.domain.member;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import instagram.instagram.domain.baseEntity.BaseTimeEntity;
 import instagram.instagram.domain.follow.Follow;
 import instagram.instagram.domain.post.Post;
@@ -32,15 +33,16 @@ public class Member extends BaseTimeEntity {
     private String profileImage;
     private String bio;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @OneToMany(mappedBy = "member") // post 는 나중에 확장하게 될떄 여러 Entity 와 연관될 가능성이 많기 때문에 cascade 설정을 하지 않았다.
     private List<Post> posts = new ArrayList<>();
 
-
+    @JsonIgnore
     @OneToMany(mappedBy = "toMember",cascade = CascadeType.ALL)
     private List<Follow> followers = new ArrayList<>();
 
-
-    @OneToMany(mappedBy = "fromMember")
+    @JsonIgnore
+    @OneToMany(mappedBy = "fromMember",cascade = CascadeType.ALL)
     private List<Follow> followings = new ArrayList<>();
 
 
@@ -54,10 +56,6 @@ public class Member extends BaseTimeEntity {
         this.birth = birth;
     }
 
-
-//    public Member(String name) {
-//        this.name = name;
-//    }
 
     public void setNickname(String nickname) {
         this.nickname = nickname;

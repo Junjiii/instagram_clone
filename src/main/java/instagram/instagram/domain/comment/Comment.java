@@ -1,6 +1,7 @@
 package instagram.instagram.domain.comment;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import instagram.instagram.domain.baseEntity.BaseTimeEntity;
 import instagram.instagram.domain.member.Member;
 import instagram.instagram.domain.post.Post;
@@ -31,6 +32,7 @@ public class Comment extends BaseTimeEntity {
 
     private String comment;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "comment",cascade = CascadeType.ALL)
     private List<CommentLike> commentLikes = new ArrayList<>();
 
