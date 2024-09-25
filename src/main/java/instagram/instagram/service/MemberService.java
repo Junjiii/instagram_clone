@@ -41,13 +41,6 @@ public class MemberService {
         return member.getId();
     }
 
-    public List<Member> findMember(Long id) {
-//        return em.createQuery("select m from Member m left join m.posts p left join p.postImages pi where m.id = :id", Member.class).setParameter("id",id).getResultList();
-        return em.createQuery("select m from Member m " +
-                "join fetch m.posts p " +
-//                "join fetch p.postImages pi " +
-                "where m.id = :id", Member.class).setParameter("id",id).getResultList();
-    }
 
     @Transactional
     public Long follow(Long fromMemberId, Long toMemberId) {

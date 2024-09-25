@@ -2,6 +2,7 @@ package instagram.instagram.web.controller;
 
 
 import instagram.instagram.domain.member.Member;
+import instagram.instagram.domain.member.MemberQueryRepository;
 import instagram.instagram.domain.member.MemberRepository;
 import instagram.instagram.service.MemberService;
 import instagram.instagram.web.dto.member.MemberJoinRequest;
@@ -16,10 +17,11 @@ public class MemberController {
 
     private final MemberRepository memberRepository;
     private final MemberService memberService;
+    private final MemberQueryRepository memberQueryRepository;
 
     @GetMapping("/member/{id}")
     public MemberProfileDto findMember(@PathVariable("id") Long id) {
-        Member member = memberService.findMember(id).get(0);
+        Member member = memberQueryRepository.findMember(id).get(0);
         return new MemberProfileDto(member);
     }
 
