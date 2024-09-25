@@ -5,7 +5,7 @@ import instagram.instagram.domain.follow.FollowRepository;
 import instagram.instagram.domain.member.Gender;
 import instagram.instagram.domain.member.Member;
 import instagram.instagram.domain.member.MemberRepository;
-import instagram.instagram.web.dto.member.MemberJoinReqDto;
+import instagram.instagram.web.dto.member.MemberJoinRequest;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,17 +24,17 @@ public class MemberService {
     private final EntityManager em;
 
     @Transactional
-    public Long join(MemberJoinReqDto memberJoinReqDto) {
+    public Long join(MemberJoinRequest memberJoinRequest) {
 
-        checkDuplicateMember(memberJoinReqDto);
+        checkDuplicateMember(memberJoinRequest);
 
         Member member = new Member(
-                memberJoinReqDto.getEmail(),
-                memberJoinReqDto.getPassword(),
-                memberJoinReqDto.getName(),
-                memberJoinReqDto.getPhoneNumber(),
-                Gender.of(memberJoinReqDto.getGender()),
-                LocalDate.of(memberJoinReqDto.getYear(), memberJoinReqDto.getMonth(), memberJoinReqDto.getDay()));
+                memberJoinRequest.getEmail(),
+                memberJoinRequest.getPassword(),
+                memberJoinRequest.getName(),
+                memberJoinRequest.getPhoneNumber(),
+                Gender.of(memberJoinRequest.getGender()),
+                LocalDate.of(memberJoinRequest.getYear(), memberJoinRequest.getMonth(), memberJoinRequest.getDay()));
 
         memberRepository.save(member);
 
@@ -43,7 +43,10 @@ public class MemberService {
 
     public List<Member> findMember(Long id) {
 //        return em.createQuery("select m from Member m left join m.posts p left join p.postImages pi where m.id = :id", Member.class).setParameter("id",id).getResultList();
-        return em.createQuery("select m from Member m where m.id = :id",Member.class).setParameter("id",id).getResultList();
+        return em.createQuery("select m from Member m " +
+                "join fetch m.posts p " +
+//                "join fetch p.postImages pi " +
+                "where m.id = :id", Member.class).setParameter("id",id).getResultList();
     }
 
     @Transactional
@@ -82,13 +85,13 @@ public class MemberService {
     /**
      * email,name 중복 체크
      */
-    public void checkDuplicateMember(MemberJoinReqDto memberJoinReqDto) {
+    public void checkDuplicateMember(MemberJoinRequest memberJoinRequest) {
 
-        if(!memberRepository.findByEmail(memberJoinReqDto.getEmail()).isEmpty()) {
+        if(!memberRepository.findByEmail(memberJoinRequest.getEmail()).isEmpty()) {
             throw new IllegalStateException("이미 존재하는 Email 입니다.");
         }
 
-        if(!memberRepository.findByName(memberJoinReqDto.getName()).isEmpty()) {
+        if(!memberRepository.findByName(memberJoinRequest.getName()).isEmpty()) {
             throw new IllegalStateException("이미 존재하는 유저 입니다.");
         }
 

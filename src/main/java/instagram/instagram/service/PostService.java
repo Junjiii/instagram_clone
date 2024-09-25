@@ -7,12 +7,10 @@ import instagram.instagram.domain.member.MemberRepository;
 import instagram.instagram.domain.post.Post;
 import instagram.instagram.domain.post.PostHashtag;
 import instagram.instagram.domain.post.PostRepository;
-import instagram.instagram.web.dto.post.PostCreateReqDto;
+import instagram.instagram.web.dto.post.PostCreateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -25,16 +23,16 @@ public class PostService {
 
 
     @Transactional
-    public Long createPost(Long memberId,PostCreateReqDto postCreateReqDto) {
+    public Long createPost(Long memberId, PostCreateRequest postCreateRequest) {
         Member member = memberRepository.findById(memberId).
                 orElseThrow(() -> new IllegalArgumentException("일치하는 유저가 없습니다."));
 
-        Post post = new Post(postCreateReqDto.getContent(), member);
+        Post post = new Post(postCreateRequest.getContent(), member);
 
         // image
-        if(!postCreateReqDto.getImageUrls().isEmpty()) {
+        if(!postCreateRequest.getImageUrls().isEmpty()) {
             int sequence = 1;
-            for(String imageUrl : postCreateReqDto.getImageUrls()) {
+            for(String imageUrl : postCreateRequest.getImageUrls()) {
                 post.addPostImages(imageUrl,sequence);
                 sequence++;
             }
@@ -44,8 +42,8 @@ public class PostService {
 
 
         // hashtag
-        if(!postCreateReqDto.getHashtags().isEmpty()) {
-            for(String hashtag : postCreateReqDto.getHashtags()) {
+        if(!postCreateRequest.getHashtags().isEmpty()) {
+            for(String hashtag : postCreateRequest.getHashtags()) {
                 createPostHashtag(post, hashtag);
             }
         }

@@ -1,5 +1,6 @@
 package instagram.instagram.domain.post;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import instagram.instagram.domain.baseEntity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -17,6 +18,7 @@ public class PostImage extends BaseTimeEntity {
     @Column(name = "post_image_id")
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;

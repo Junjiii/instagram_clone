@@ -6,6 +6,8 @@ import instagram.instagram.domain.follow.Follow;
 import instagram.instagram.domain.post.Post;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

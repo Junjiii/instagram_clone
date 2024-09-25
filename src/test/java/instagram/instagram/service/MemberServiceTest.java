@@ -4,12 +4,11 @@ import instagram.instagram.domain.follow.FollowRepository;
 import instagram.instagram.domain.member.Gender;
 import instagram.instagram.domain.member.Member;
 import instagram.instagram.domain.member.MemberRepository;
-import instagram.instagram.web.dto.member.MemberJoinReqDto;
+import instagram.instagram.web.dto.member.MemberJoinRequest;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -34,7 +33,7 @@ class MemberServiceTest {
     public void 회원가입() throws Exception
     {
         // given
-        MemberJoinReqDto memberJoinReqDto = new MemberJoinReqDto(
+        MemberJoinRequest memberJoinRequest = new MemberJoinRequest(
                 "email@gmamil.com",
                 "password",
                 "user",
@@ -44,7 +43,7 @@ class MemberServiceTest {
                 11,
                 11
         );
-        Long savedMemberId = memberService.join(memberJoinReqDto);
+        Long savedMemberId = memberService.join(memberJoinRequest);
 
 
         // when
@@ -54,10 +53,10 @@ class MemberServiceTest {
 
         // then
         assertThat(findMember.getId()).isEqualTo(savedMemberId);
-        assertThat(findMember.getEmail()).isEqualTo(memberJoinReqDto.getEmail());
-        assertThat(findMember.getPassword()).isEqualTo(memberJoinReqDto.getPassword());
-        assertThat(findMember.getName()).isEqualTo(memberJoinReqDto.getName());
-        assertThat(findMember.getPhoneNumber()).isEqualTo(memberJoinReqDto.getPhoneNumber());
+        assertThat(findMember.getEmail()).isEqualTo(memberJoinRequest.getEmail());
+        assertThat(findMember.getPassword()).isEqualTo(memberJoinRequest.getPassword());
+        assertThat(findMember.getName()).isEqualTo(memberJoinRequest.getName());
+        assertThat(findMember.getPhoneNumber()).isEqualTo(memberJoinRequest.getPhoneNumber());
         assertThat(findMember.getGender()).isEqualTo(Gender.MALE);
         assertThat(findMember.getBirth()).isEqualTo(LocalDate.of(2024,11,11));
         // 최초 생성시 nickname의 default 값은 기본 name 값
@@ -240,7 +239,7 @@ class MemberServiceTest {
 
 
     public Member createMemberDto(String email, String name) {
-        MemberJoinReqDto memberJoinReqDto = new MemberJoinReqDto(
+        MemberJoinRequest memberJoinRequest = new MemberJoinRequest(
                 email,
                 "password",
                 name,
@@ -251,7 +250,7 @@ class MemberServiceTest {
                 11
         );
 
-        Long savedMemberId = memberService.join(memberJoinReqDto);
+        Long savedMemberId = memberService.join(memberJoinRequest);
         return memberRepository.findById(savedMemberId).get();
     }
 }

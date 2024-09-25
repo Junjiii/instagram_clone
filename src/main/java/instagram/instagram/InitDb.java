@@ -1,12 +1,10 @@
 package instagram.instagram;
 
 
-import instagram.instagram.domain.member.Member;
-import instagram.instagram.domain.post.Post;
 import instagram.instagram.service.MemberService;
 import instagram.instagram.service.PostService;
-import instagram.instagram.web.dto.member.MemberJoinReqDto;
-import instagram.instagram.web.dto.post.PostCreateReqDto;
+import instagram.instagram.web.dto.member.MemberJoinRequest;
+import instagram.instagram.web.dto.post.PostCreateRequest;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +47,7 @@ public class InitDb {
 
 
         public Long createMember(String email, String name) {
-            MemberJoinReqDto memberJoinReqDto = new MemberJoinReqDto(
+            MemberJoinRequest memberJoinRequest = new MemberJoinRequest(
                     email,
                     "password",
                     name,
@@ -60,7 +58,7 @@ public class InitDb {
                     11
             );
 
-            return memberService.join(memberJoinReqDto);
+            return memberService.join(memberJoinRequest);
         }
 
 
@@ -76,8 +74,8 @@ public class InitDb {
                 hashtags.add("#Hashtag" + i);
             }
 
-            PostCreateReqDto postCreateReqDto = new PostCreateReqDto(content, imageUrls, hashtags);
-            postService.createPost(memberId, postCreateReqDto);
+            PostCreateRequest postCreateRequest = new PostCreateRequest(content, imageUrls, hashtags);
+            postService.createPost(memberId, postCreateRequest);
         }
     }
 }

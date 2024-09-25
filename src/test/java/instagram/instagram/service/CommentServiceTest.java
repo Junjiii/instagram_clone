@@ -7,8 +7,8 @@ import instagram.instagram.domain.member.Member;
 import instagram.instagram.domain.member.MemberRepository;
 import instagram.instagram.domain.post.Post;
 import instagram.instagram.domain.post.PostRepository;
-import instagram.instagram.web.dto.member.MemberJoinReqDto;
-import instagram.instagram.web.dto.post.PostCreateReqDto;
+import instagram.instagram.web.dto.member.MemberJoinRequest;
+import instagram.instagram.web.dto.post.PostCreateRequest;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,7 +112,7 @@ class CommentServiceTest {
     }
 
     public Member createMemberDto(String email, String name) {
-        MemberJoinReqDto memberJoinReqDto = new MemberJoinReqDto(
+        MemberJoinRequest memberJoinRequest = new MemberJoinRequest(
                 email,
                 "password",
                 name,
@@ -123,7 +123,7 @@ class CommentServiceTest {
                 11
         );
 
-        Long savedMemberId = memberService.join(memberJoinReqDto);
+        Long savedMemberId = memberService.join(memberJoinRequest);
         return memberRepository.findById(savedMemberId).get();
 
     }
@@ -141,8 +141,8 @@ class CommentServiceTest {
             hashtags.add("#Hashtag" + i);
         }
 
-        PostCreateReqDto postCreateReqDto = new PostCreateReqDto(content, imageUrls, hashtags);
-        Long savedPostId = postService.createPost(memberId, postCreateReqDto);
+        PostCreateRequest postCreateRequest = new PostCreateRequest(content, imageUrls, hashtags);
+        Long savedPostId = postService.createPost(memberId, postCreateRequest);
         return postRepository.findById(savedPostId).get();
     }
 
