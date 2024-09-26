@@ -1,6 +1,8 @@
 package instagram.instagram;
 
 
+import instagram.instagram.domain.member.Member;
+import instagram.instagram.domain.member.MemberRepository;
 import instagram.instagram.service.MemberService;
 import instagram.instagram.service.PostService;
 import instagram.instagram.web.dto.member.MemberJoinRequest;
@@ -30,6 +32,7 @@ public class InitDb {
     static class InitService {
         private final EntityManager em;
         private final MemberService memberService;
+        private final MemberRepository memberRepository;
         private final PostService postService;
 
         public void dbInit() {
@@ -42,6 +45,23 @@ public class InitDb {
                     createPostDto("content" + j, random2, random3, id);
                 }
             }
+
+            memberService.follow(1L,2L);
+            memberService.follow(1L,3L);
+            memberService.follow(1L,4L);
+
+            memberService.follow(2L,1L);
+            memberService.follow(2L,4L);
+            memberService.follow(2L,5L);
+
+            memberService.follow(3L,1L);
+            memberService.follow(3L,4L);
+            memberService.follow(3L,5L);
+
+            memberService.follow(4L,2L);
+            memberService.follow(4L,3L);
+
+            memberService.follow(5L,4L);
 
         }
 

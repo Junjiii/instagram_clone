@@ -1,5 +1,6 @@
 package instagram.instagram.web.dto.member;
 
+import com.querydsl.core.annotations.QueryProjection;
 import instagram.instagram.domain.member.Gender;
 import instagram.instagram.domain.member.Member;
 import instagram.instagram.domain.post.Post;
@@ -26,7 +27,10 @@ public class MemberProfileDto {
         private String profileImage;
         private String bio;
         private List<MemberPostDto>  posts;
+        private int followers;
+        private int followings;
 
+        @QueryProjection
         public MemberProfileDto(Member member) {
             this.memberId = member.getId();
             this.email = member.getEmail();
@@ -39,6 +43,8 @@ public class MemberProfileDto {
             this.profileImage = member.getProfileImage();
             this.bio = member.getBio();
             this.posts = member.getPosts().stream().sorted(Comparator.comparing(Post::getCreatedDate).reversed()).map(MemberPostDto::new).collect(Collectors.toList());
+            this.followers = member.getFollowers().size();
+            this.followings = member.getFollowings().size();
         }
 }
 
@@ -49,7 +55,7 @@ class MemberPostDto {
     private String content;
     private PostImagesDto postImage;
 
-
+    @QueryProjection
     public MemberPostDto(Post post) {
         this.postId = post.getId();
         this.content = post.getContent();
@@ -62,6 +68,7 @@ class MemberPostDto {
 class PostImagesDto {
     private String imageUrl;
 
+    @QueryProjection
     public PostImagesDto(PostImage postImage) {
         this.imageUrl = postImage.getImage_URL();
     }

@@ -12,11 +12,6 @@ public class PostCreateRequest {
     private List<String> hashtags;
 
 
-    public PostCreateRequest(String content, List<String> imageUrls) {
-        this.content = content;
-        this.imageUrls = imageUrls;
-    }
-
     public PostCreateRequest(String content, List<String> imageUrls, List<String> hashtags) {
         this.content = content;
         this.imageUrls = imageUrls;

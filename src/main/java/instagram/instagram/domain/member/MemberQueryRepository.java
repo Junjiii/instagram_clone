@@ -13,11 +13,21 @@ public class MemberQueryRepository {
 
     private final EntityManager em;
 
+//    public List<Member> findMember(Long id) {
+////        return em.createQuery("select m from Member m left join m.posts p left join p.postImages pi where m.id = :id", Member.class).setParameter("id",id).getResultList();
+//        return em.createQuery("select m from Member m " +
+//                "join fetch m.posts p " +
+////                "join fetch p.postImages pi " +
+//                "where m.id = :id", Member.class).setParameter("id",id).getResultList();
+//    }
+
     public List<Member> findMember(Long id) {
 //        return em.createQuery("select m from Member m left join m.posts p left join p.postImages pi where m.id = :id", Member.class).setParameter("id",id).getResultList();
         return em.createQuery("select m from Member m " +
-                "join fetch m.posts p " +
-//                "join fetch p.postImages pi " +
+                "left join m.posts p " +
+                "left join m.followers fwr " +
+                "left join m.followings fwg " +
+                "left join p.postImages pi " +
                 "where m.id = :id", Member.class).setParameter("id",id).getResultList();
     }
 }
