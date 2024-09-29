@@ -23,7 +23,7 @@ public class MemberController {
 
     @GetMapping("/member/{id}")
     public MemberProfileDto findMemberProfile(@PathVariable("id") Long id) {
-        return memberQueryRepository.findMemberProfileDto(id);
+        return memberService.findMemberProfileDto(id);
     }
 
 

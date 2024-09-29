@@ -4,8 +4,11 @@ import instagram.instagram.domain.follow.Follow;
 import instagram.instagram.domain.follow.FollowRepository;
 import instagram.instagram.domain.member.Gender;
 import instagram.instagram.domain.member.Member;
+import instagram.instagram.domain.member.MemberQueryRepository;
 import instagram.instagram.domain.member.MemberRepository;
 import instagram.instagram.web.dto.member.MemberJoinRequest;
+import instagram.instagram.web.dto.member.MemberProfileDto;
+import instagram.instagram.web.dto.member.MemberProfilePostDto;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,7 @@ import java.util.List;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final MemberQueryRepository memberQueryRepository;
     private final FollowRepository followRepository;
     private final EntityManager em;
 
@@ -88,5 +92,14 @@ public class MemberService {
             throw new IllegalStateException("이미 존재하는 유저 입니다.");
         }
 
+    }
+
+
+
+    public MemberProfileDto findMemberProfileDto(Long id) {
+        MemberProfileDto memberProfile = memberQueryRepository.findMemberProfileDto_withFollowCount(id);
+        List<MemberProfilePostDto> posts = memberQueryRepository.findPost(id);
+        memberProfile.setPosts(posts);
+        return memberProfile;
     }
 }

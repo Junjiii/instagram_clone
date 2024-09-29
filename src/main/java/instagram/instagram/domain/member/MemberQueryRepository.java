@@ -15,12 +15,11 @@ public class MemberQueryRepository {
 
     private final EntityManager em;
 
-    public MemberProfileDto findMemberProfileDto(Long id) {
-        MemberProfileDto memberProfile = findMemberProfileDto_withFollowCount(id);
-        List<MemberProfilePostDto> posts = findPost(id);
-        memberProfile.setPosts(posts);
-        return memberProfile;
-    }
+
+    /**
+     * member profile dto
+     * 1) withFollowCount
+     */
 
     public MemberProfileDto findMemberProfileDto_withFollowCount(Long id) {
         return em.createQuery("select new instagram.instagram.web.dto.member.MemberProfileDto(m.id, m.nickname, m.profileImage, m.bio, " +
@@ -33,6 +32,10 @@ public class MemberQueryRepository {
     }
 
 
+    /**
+     * member profile dto
+     * 2) findPost
+     */
     public List<MemberProfilePostDto> findPost(Long memberId) {
         return em.createQuery("select new instagram.instagram.web.dto.member.MemberProfilePostDto(p.id, pi.image_URL) " +
                 "from Post p " +
