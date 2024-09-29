@@ -22,7 +22,7 @@ public class InitDb {
     private final InitService initService;
 
     @PostConstruct
-    public void inti() {
+    public void init() {
         initService.dbInit();
     }
 
@@ -30,9 +30,7 @@ public class InitDb {
     @Transactional
     @RequiredArgsConstructor
     static class InitService {
-        private final EntityManager em;
         private final MemberService memberService;
-        private final MemberRepository memberRepository;
         private final PostService postService;
 
         public void dbInit() {
