@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.print.Pageable;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -96,9 +97,9 @@ public class MemberService {
 
 
 
-    public MemberProfileDto findMemberProfileDto(Long id) {
+    public MemberProfileDto findMemberProfileDto(Long id, int offset, int limit) {
         MemberProfileDto memberProfile = memberQueryRepository.findMemberProfileDto_withFollowCount(id);
-        List<MemberProfilePostDto> posts = memberQueryRepository.findPost(id);
+        List<MemberProfilePostDto> posts = memberQueryRepository.findPost(id,offset,limit);
         memberProfile.setPosts(posts);
         return memberProfile;
     }

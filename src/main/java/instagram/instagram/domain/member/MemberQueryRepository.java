@@ -36,7 +36,7 @@ public class MemberQueryRepository {
      * member profile dto
      * 2) findPost
      */
-    public List<MemberProfilePostDto> findPost(Long memberId) {
+    public List<MemberProfilePostDto> findPost(Long memberId,int offset, int limit) {
         return em.createQuery("select new instagram.instagram.web.dto.member.MemberProfilePostDto(p.id, pi.image_URL) " +
                 "from Post p " +
                 "join fetch PostImage pi " +
@@ -45,6 +45,8 @@ public class MemberQueryRepository {
                 "and pi.sequence = 1 " +
                 "order by p.id desc",MemberProfilePostDto.class)
                 .setParameter("id", memberId)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
                 .getResultList();
     }
 
