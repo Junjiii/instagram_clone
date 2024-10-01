@@ -7,10 +7,15 @@ import instagram.instagram.domain.member.MemberRepository;
 import instagram.instagram.domain.post.Post;
 import instagram.instagram.domain.post.PostHashtag;
 import instagram.instagram.domain.post.PostRepository;
-import instagram.instagram.web.dto.post.PostCreateRequest;
+import instagram.instagram.web.dto.post.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Transactional(readOnly = true)
@@ -73,7 +78,30 @@ public class PostService {
     public void createPostLike(Long postId, Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("일치하는 유저가 없습니다."));
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("일치하는 포스트가 없습니다."));
-
         post.addPostLikes(member);
     }
+
+
+    public PostDetailsDto findPostDetails(Long postId) {
+        Post post = postRepository.findById(postId).get();
+        PostDetailsDto postDetailsDto = new PostDetailsDto(post.getId(), post.getContent(), post.getPostLikes().size());
+
+        // postHashtag
+        List<PostHashtagDto> postHashtagDtos = post.getPostHashtags().stream().map(hashtag -> new PostHashtagDto(hashtag.getHashtag().getHashtag())).collect(Collectors.toList());
+        postDetailsDto.setPostHashtags(postHashtagDtos);
+
+        // postImages
+        List<PostDetailsImageDto> postDetailsImageDtos = post.getPostImages().stream().map(postImage -> new PostDetailsImageDto(postImage.getImage_URL())).collect(Collectors.toList());
+        postDetailsDto.setPostDetailsImages(postDetailsImageDtos);
+
+        // comment
+        List<PostCommentDto> postCommentDtos = post.getComments().stream().map(comment -> new PostCommentDto(comment.getId(), comment.getMember().getProfileImage(), comment.getMember().getNickname(), comment.getComment())).collect(Collectors.toList());
+        postDetailsDto.setPostComments(postCommentDtos);
+
+        // postLikes
+        postDetailsDto.setPostLikes(post.getPostLikes().size());
+
+        return postDetailsDto;
+    }
+
 }

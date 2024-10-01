@@ -96,7 +96,9 @@ public class MemberService {
     }
 
 
-
+    /**
+     * Member Profile
+     */
     public MemberProfileDto findMemberProfileDto(Long id, int offset, int limit) {
         MemberProfileDto memberProfile = memberQueryRepository.findMemberProfileDto_withFollowCount(id);
         List<MemberProfilePostDto> posts = memberQueryRepository.findPost(id,offset,limit);
