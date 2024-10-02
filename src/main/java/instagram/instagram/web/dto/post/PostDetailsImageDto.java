@@ -1,5 +1,6 @@
 package instagram.instagram.web.dto.post;
 
+import instagram.instagram.domain.post.PostImage;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import lombok.Setter;
 public class PostDetailsImageDto {
     private String imageUrl;
 
-    public PostDetailsImageDto(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public PostDetailsImageDto(PostImage postImage) {
+        this.imageUrl = postImage.getImage_URL();
     }
 }

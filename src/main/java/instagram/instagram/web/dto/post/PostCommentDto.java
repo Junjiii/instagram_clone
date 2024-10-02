@@ -14,10 +14,10 @@ public class PostCommentDto {
     private String memberNickname;
     private String comment;
 
-    public PostCommentDto(Long commentId, String memberProfileImageUrl, String memberNickname, String comment) {
+    public PostCommentDto(Long commentId, String profileImage, String nickname, String comment ) {
         this.commentId = commentId;
-        this.memberProfileImageUrl = memberProfileImageUrl;
-        this.memberNickname = memberNickname;
+        this.memberProfileImageUrl = profileImage;
+        this.memberNickname = nickname;
         this.comment = comment;
     }
 
