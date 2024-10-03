@@ -1,8 +1,8 @@
-package instagram.instagram.domain.post;
+package instagram.instagram.domain.post.entity;
 
 
 import instagram.instagram.domain.baseEntity.BaseTimeEntity;
-import instagram.instagram.domain.hashtag.Hashtag;
+import instagram.instagram.domain.hashtag.entity.Hashtag;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,14 +1,12 @@
 package instagram.instagram.web.dto.post;
 
-import instagram.instagram.domain.member.Member;
-import instagram.instagram.domain.post.Post;
+import com.querydsl.core.annotations.QueryProjection;
+import instagram.instagram.domain.post.entity.Post;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 @Getter
 @Setter
@@ -22,6 +20,7 @@ public class PostDetailsDto {
     private List<PostCommentDto> postComments;
     private int postLikes;
 
+    @QueryProjection
     public PostDetailsDto(Post post) {
         this.postId = post.getId();
         this.content = post.getContent();
@@ -36,6 +35,7 @@ public class PostDetailsDto {
         private String nickname;
         private String profileImage;
 
+        @QueryProjection
         public MemberDto(String nickname, String profileImage) {
             this.nickname = nickname;
             this.profileImage = profileImage;

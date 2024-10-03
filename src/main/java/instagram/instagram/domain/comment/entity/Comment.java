@@ -1,10 +1,10 @@
-package instagram.instagram.domain.comment;
+package instagram.instagram.domain.comment.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import instagram.instagram.domain.baseEntity.BaseTimeEntity;
-import instagram.instagram.domain.member.Member;
-import instagram.instagram.domain.post.Post;
+import instagram.instagram.domain.member.entity.Member;
+import instagram.instagram.domain.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,9 +1,8 @@
-package instagram.instagram.domain.post;
+package instagram.instagram.domain.post.entity;
 
 import instagram.instagram.domain.baseEntity.BaseTimeEntity;
-import instagram.instagram.domain.member.Member;
+import instagram.instagram.domain.member.entity.Member;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

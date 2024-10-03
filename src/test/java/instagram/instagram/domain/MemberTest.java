@@ -1,7 +1,7 @@
 package instagram.instagram.domain;
 
-import instagram.instagram.domain.member.Gender;
-import instagram.instagram.domain.member.Member;
+import instagram.instagram.domain.member.entity.Gender;
+import instagram.instagram.domain.member.entity.Member;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

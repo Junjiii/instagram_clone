@@ -1,4 +1,4 @@
-package instagram.instagram.domain.hashtag;
+package instagram.instagram.domain.hashtag.entity;
 
 import instagram.instagram.domain.baseEntity.BaseTimeEntity;
 import jakarta.persistence.Column;

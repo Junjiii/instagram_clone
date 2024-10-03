@@ -1,7 +1,8 @@
-package instagram.instagram.domain.follow;
+package instagram.instagram.domain.follow.repository;
 
 
-import instagram.instagram.domain.member.Member;
+import instagram.instagram.domain.follow.entity.Follow;
+import instagram.instagram.domain.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 

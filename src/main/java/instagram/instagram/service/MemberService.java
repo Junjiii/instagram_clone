@@ -1,11 +1,11 @@
 package instagram.instagram.service;
 
-import instagram.instagram.domain.follow.Follow;
-import instagram.instagram.domain.follow.FollowRepository;
-import instagram.instagram.domain.member.Gender;
-import instagram.instagram.domain.member.Member;
-import instagram.instagram.domain.member.MemberQueryRepository;
-import instagram.instagram.domain.member.MemberRepository;
+import instagram.instagram.domain.follow.entity.Follow;
+import instagram.instagram.domain.follow.repository.FollowRepository;
+import instagram.instagram.domain.member.entity.Gender;
+import instagram.instagram.domain.member.entity.Member;
+import instagram.instagram.domain.member.repository.MemberQueryRepository;
+import instagram.instagram.domain.member.repository.MemberRepository;
 import instagram.instagram.web.dto.member.MemberJoinRequest;
 import instagram.instagram.web.dto.member.MemberProfileDto;
 import instagram.instagram.web.dto.member.MemberProfilePostDto;
@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.print.Pageable;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -100,8 +99,10 @@ public class MemberService {
      * Member Profile
      */
     public MemberProfileDto findMemberProfileDto(Long id, int offset, int limit) {
-        MemberProfileDto memberProfile = memberQueryRepository.findMemberProfileDto_withFollowCount(id);
-        List<MemberProfilePostDto> posts = memberQueryRepository.findPost(id,offset,limit);
+        MemberProfileDto memberProfile = memberRepository.findMemberProfileDto_withFollowCount(id);
+//        MemberProfileDto memberProfile = memberQueryRepository.findMemberProfileDto_withFollowCount(id);
+        List<MemberProfilePostDto> posts = memberRepository.findPost(id,offset,limit);
+//        List<MemberProfilePostDto> posts = memberQueryRepository.findPost(id,offset,limit);
         memberProfile.setPosts(posts);
         return memberProfile;
     }

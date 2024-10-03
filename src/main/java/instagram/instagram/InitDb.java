@@ -1,15 +1,12 @@
 package instagram.instagram;
 
 
-import instagram.instagram.domain.member.Member;
-import instagram.instagram.domain.member.MemberRepository;
 import instagram.instagram.service.CommentService;
 import instagram.instagram.service.MemberService;
 import instagram.instagram.service.PostService;
 import instagram.instagram.web.dto.member.MemberJoinRequest;
 import instagram.instagram.web.dto.post.PostCreateRequest;
 import jakarta.annotation.PostConstruct;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

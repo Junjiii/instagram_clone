@@ -1,5 +1,6 @@
 package instagram.instagram.web.dto.member;
 
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +21,7 @@ public class MemberProfileDto {
     private int followers;
 
 
+    @QueryProjection
     public MemberProfileDto(Long memberId, String nickname, String profileImage, String bio, Long followings, Long followers) {
         this.memberId = memberId;
         this.nickname = nickname;

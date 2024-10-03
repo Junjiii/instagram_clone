@@ -1,5 +1,6 @@
-package instagram.instagram.domain.post;
+package instagram.instagram.domain.post.repository;
 
+import instagram.instagram.domain.post.entity.Post;
 import instagram.instagram.web.dto.post.PostCommentDto;
 import instagram.instagram.web.dto.post.PostHashtagDto;
 import jakarta.persistence.EntityManager;

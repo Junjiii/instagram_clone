@@ -1,7 +1,7 @@
-package instagram.instagram.domain.follow;
+package instagram.instagram.domain.follow.entity;
 
 import instagram.instagram.domain.baseEntity.BaseTimeEntity;
-import instagram.instagram.domain.member.Member;
+import instagram.instagram.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

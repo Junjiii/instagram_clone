@@ -1,4 +1,4 @@
-package instagram.instagram.domain.member;
+package instagram.instagram.domain.member.repository;
 
 
 import instagram.instagram.web.dto.member.MemberProfileDto;

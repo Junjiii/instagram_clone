@@ -1,9 +1,9 @@
 package instagram.instagram.service;
 
-import instagram.instagram.domain.follow.FollowRepository;
-import instagram.instagram.domain.member.Gender;
-import instagram.instagram.domain.member.Member;
-import instagram.instagram.domain.member.MemberRepository;
+import instagram.instagram.domain.follow.repository.FollowRepository;
+import instagram.instagram.domain.member.entity.Gender;
+import instagram.instagram.domain.member.entity.Member;
+import instagram.instagram.domain.member.repository.MemberRepository;
 import instagram.instagram.web.dto.member.MemberJoinRequest;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;

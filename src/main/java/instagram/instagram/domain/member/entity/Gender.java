@@ -1,4 +1,4 @@
-package instagram.instagram.domain.member;
+package instagram.instagram.domain.member.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 

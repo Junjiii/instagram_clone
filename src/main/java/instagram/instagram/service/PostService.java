@@ -1,13 +1,13 @@
 package instagram.instagram.service;
 
-import instagram.instagram.domain.hashtag.Hashtag;
-import instagram.instagram.domain.hashtag.HashtagRepository;
-import instagram.instagram.domain.member.Member;
-import instagram.instagram.domain.member.MemberRepository;
-import instagram.instagram.domain.post.Post;
-import instagram.instagram.domain.post.PostHashtag;
-import instagram.instagram.domain.post.PostQueryRepository;
-import instagram.instagram.domain.post.PostRepository;
+import instagram.instagram.domain.hashtag.entity.Hashtag;
+import instagram.instagram.domain.hashtag.repository.HashtagRepository;
+import instagram.instagram.domain.member.entity.Member;
+import instagram.instagram.domain.member.repository.MemberRepository;
+import instagram.instagram.domain.post.entity.Post;
+import instagram.instagram.domain.post.entity.PostHashtag;
+import instagram.instagram.domain.post.repository.PostQueryRepository;
+import instagram.instagram.domain.post.repository.PostRepository;
 import instagram.instagram.web.dto.post.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

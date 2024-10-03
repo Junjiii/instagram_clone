@@ -1,13 +1,10 @@
-package instagram.instagram.domain.comment;
+package instagram.instagram.domain.comment.entity;
 
 import instagram.instagram.domain.baseEntity.BaseTimeEntity;
-import instagram.instagram.domain.member.Member;
+import instagram.instagram.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter

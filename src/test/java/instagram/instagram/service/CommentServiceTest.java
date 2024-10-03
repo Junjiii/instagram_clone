@@ -1,12 +1,12 @@
 package instagram.instagram.service;
 
-import instagram.instagram.domain.comment.Comment;
-import instagram.instagram.domain.comment.CommentLikeRepository;
-import instagram.instagram.domain.comment.CommentRepository;
-import instagram.instagram.domain.member.Member;
-import instagram.instagram.domain.member.MemberRepository;
-import instagram.instagram.domain.post.Post;
-import instagram.instagram.domain.post.PostRepository;
+import instagram.instagram.domain.comment.entity.Comment;
+import instagram.instagram.domain.comment.repository.CommentLikeRepository;
+import instagram.instagram.domain.comment.repository.CommentRepository;
+import instagram.instagram.domain.member.entity.Member;
+import instagram.instagram.domain.member.repository.MemberRepository;
+import instagram.instagram.domain.post.entity.Post;
+import instagram.instagram.domain.post.repository.PostRepository;
 import instagram.instagram.web.dto.member.MemberJoinRequest;
 import instagram.instagram.web.dto.post.PostCreateRequest;
 import jakarta.persistence.EntityManager;

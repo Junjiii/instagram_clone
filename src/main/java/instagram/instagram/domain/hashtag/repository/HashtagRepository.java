@@ -1,8 +1,7 @@
-package instagram.instagram.domain.hashtag;
+package instagram.instagram.domain.hashtag.repository;
 
+import instagram.instagram.domain.hashtag.entity.Hashtag;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
 
 public interface HashtagRepository extends JpaRepository<Hashtag,Long> {
 

@@ -1,12 +1,10 @@
-package instagram.instagram.domain.post;
+package instagram.instagram.domain.post.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import instagram.instagram.domain.baseEntity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Entity
 @Getter

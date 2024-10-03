@@ -1,14 +1,12 @@
-package instagram.instagram.domain.post;
+package instagram.instagram.domain.post.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import instagram.instagram.domain.baseEntity.BaseTimeEntity;
-import instagram.instagram.domain.comment.Comment;
-import instagram.instagram.domain.member.Member;
+import instagram.instagram.domain.comment.entity.Comment;
+import instagram.instagram.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import java.util.ArrayList;
 import java.util.List;
