@@ -1,7 +1,6 @@
 package instagram.instagram.web.dto.post;
 
 import com.querydsl.core.annotations.QueryProjection;
-import instagram.instagram.domain.post.entity.Post;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,13 +19,15 @@ public class PostDetailsDto {
     private List<PostCommentDto> postComments;
     private int postLikes;
 
+
     @QueryProjection
-    public PostDetailsDto(Post post) {
-        this.postId = post.getId();
-        this.content = post.getContent();
-        this.postLikes = post.getPostLikes().size();
-        this.member = new MemberDto(post.getMember().getNickname(),post.getMember().getProfileImage());
+    public PostDetailsDto(List<PostFindDb> post) {
+        this.postId = post.get(0).getPostId();
+        this.content = post.get(0).getContent();
+        this.member = new MemberDto(post.get(0).getNickname(),post.get(0).getProfileImage());
     }
+
+
 
     @Getter
     @Setter

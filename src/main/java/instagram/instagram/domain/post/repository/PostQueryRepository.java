@@ -1,6 +1,6 @@
 package instagram.instagram.domain.post.repository;
 
-import instagram.instagram.domain.post.entity.Post;
+import instagram.instagram.web.dto.post.PostFindDb;
 import instagram.instagram.web.dto.post.PostCommentDto;
 import instagram.instagram.web.dto.post.PostHashtagDto;
 import jakarta.persistence.EntityManager;
@@ -15,13 +15,24 @@ public class PostQueryRepository {
 
     private final EntityManager em;
 
-    public Post findPost(Long id) {
-        return em.createQuery("select p from Post p " +
-                "join fetch p.member m " +
-                "join fetch p.postImages " +
-                "where p.id = :id", Post.class)
+
+    public List<PostFindDb> findPost(Long id) {
+        return em.createQuery("select new instagram.instagram.web.dto.post" +
+                        ".PostFindDb(p.id, p.content, m.nickname, m.profileImage, pi.image_URL) " +
+                        "from Post p " +
+                "join p.member m " +
+                "join p.postImages pi " +
+                "where p.id = :id", PostFindDb.class)
                 .setParameter("id",id)
-                .getSingleResult();
+                .getResultList();
+    }
+
+
+    public Long countPostLikes(Long postId) {
+        return em.createQuery("select count(pl) " +
+                        "from PostLike pl " +
+                        "where pl.post.id = :id", Long.class)
+                .setParameter("id",postId).getSingleResult();
     }
 
 
@@ -43,4 +54,15 @@ public class PostQueryRepository {
                 .setParameter("id",postId)
                 .getResultList();
     }
+
+
+    //
+//    public Post findPost(Long id) {
+//        return em.createQuery("select p from Post p " +
+//                "join fetch p.member m " +
+//                "join fetch p.postImages pi " +
+//                "where p.id = :id", Post.class)
+//                .setParameter("id",id)
+//                .getSingleResult();
+//    }
 }

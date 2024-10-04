@@ -83,36 +83,90 @@ public class PostService {
 
 
     public PostDetailsDto findPostDetails(Long postId) {
-        Post post = postQueryRepository.findPost(postId);
+        List<PostFindDb> post = postRepository.findPost(postId);
         PostDetailsDto postDetailsDto = new PostDetailsDto(post);
 
+        // postLikes count
+        setPostLikesCount(postDetailsDto);
+
+
         // postHashtag
-        setPostHashtag(post, postDetailsDto);
+        setPostHashtag(postDetailsDto);
 
         // postImages
         setPostImages(post, postDetailsDto);
 
         // comment
-        setPostComment(post, postDetailsDto);
+        setPostComment(postDetailsDto);
 
         return postDetailsDto;
     }
 
-    private void setPostComment(Post post, PostDetailsDto postDetailsDto) {
-        List<PostCommentDto> postCommentDtos = postQueryRepository.findPostCommentDtos(post.getId());
+
+    private void setPostLikesCount(PostDetailsDto postDetailsDto) {
+        Long likes = postRepository.countPostLikes(postDetailsDto.getPostId());
+        postDetailsDto.setPostLikes(likes.intValue());
+    }
+
+    private void setPostComment(PostDetailsDto postDetailsDto) {
+        List<PostCommentDto> postCommentDtos = postRepository.findPostCommentDtos(postDetailsDto.getPostId());
         postDetailsDto.setPostComments(postCommentDtos);
     }
 
-    private void setPostImages(Post post, PostDetailsDto postDetailsDto) {
-        List<PostDetailsImageDto> postDetailsImageDtos = post.getPostImages().stream()
-                .map(PostDetailsImageDto::new)
+    private void setPostImages(List<PostFindDb> post, PostDetailsDto postDetailsDto) {
+        List<PostDetailsImageDto> postDetailsImageDtos = post.stream()
+                .map(e -> new PostDetailsImageDto(e.getPostImage()))
                 .collect(Collectors.toList());
         postDetailsDto.setPostDetailsImages(postDetailsImageDtos);
     }
 
-    private void setPostHashtag(Post post, PostDetailsDto postDetailsDto) {
-        List<PostHashtagDto> postHashtag = postQueryRepository.findPostHashtags(post.getId());
+    private void setPostHashtag(PostDetailsDto postDetailsDto) {
+        List<PostHashtagDto> postHashtag = postRepository.findPostHashtags(postDetailsDto.getPostId());
         postDetailsDto.setPostHashtags(postHashtag);
     }
 
+//    public PostDetailsDto findPostDetails(Long postId) {
+//        Post post = postQueryRepository.findPost(postId);
+//        PostDetailsDto postDetailsDto = new PostDetailsDto(post);
+//
+//        // postLikes count
+//        setPostLikesCount(post, postDetailsDto);
+//
+//        // postHashtag
+//        setPostHashtag(post, postDetailsDto);
+//
+//        // postImages
+//        setPostImages(post, postDetailsDto);
+//
+//        // comment
+//        setPostComment(post, postDetailsDto);
+//
+//        return postDetailsDto;
+//    }
+//
+//
+//    private void setPostLikesCount(Post post, PostDetailsDto postDetailsDto) {
+//        Long likes = postQueryRepository.countPostLikes(post.getId());
+//        postDetailsDto.setPostLikes(likes.intValue());
+//    }
+//
+//    private void setPostComment(Post post, PostDetailsDto postDetailsDto) {
+//        List<PostCommentDto> postCommentDtos = postQueryRepository.findPostCommentDtos(post.getId());
+//        postDetailsDto.setPostComments(postCommentDtos);
+//    }
+//
+//    private void setPostImages(Post post, PostDetailsDto postDetailsDto) {
+//        List<PostDetailsImageDto> postDetailsImageDtos = post.getPostImages().stream()
+//                .map(PostDetailsImageDto::new)
+//                .collect(Collectors.toList());
+//        postDetailsDto.setPostDetailsImages(postDetailsImageDtos);
+//    }
+//
+//    private void setPostHashtag(Post post, PostDetailsDto postDetailsDto) {
+//        List<PostHashtagDto> postHashtag = postQueryRepository.findPostHashtags(post.getId());
+//        postDetailsDto.setPostHashtags(postHashtag);
+//    }
+
 }
+
+

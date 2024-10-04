@@ -13,7 +13,12 @@ public class PostDetailsImageDto {
     private String imageUrl;
 
     @QueryProjection
-    public PostDetailsImageDto(PostImage postImage) {
-        this.imageUrl = postImage.getImage_URL();
+    public PostDetailsImageDto(String postImage) {
+        this.imageUrl = postImage;
     }
+
+//    @QueryProjection
+//    public PostDetailsImageDto(PostImage postImage) {
+//        this.imageUrl = postImage.getImage_URL();
+//    }
 }
