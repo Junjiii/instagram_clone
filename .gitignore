@@ -38,3 +38,7 @@ out/
 
 ### Query DSL ###
 **/src/main/generated
+
+
+### initDB ###
+**/src/main/java/instagram/instagram/InitDb.java
