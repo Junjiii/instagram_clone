@@ -46,10 +46,14 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
 
     @Override
     public Long countPostLikes(Long postId) {
-        return queryFactory.select(postLike.count())
-                .from(postLike)
+        return queryFactory.selectFrom(postLike)
                 .where(postLike.post.id.eq(postId))
-                .fetchOne();
+                .fetchCount();
+
+//        return queryFactory.select(postLike.count())
+//                .from(postLike)
+//                .where(postLike.post.id.eq(postId))
+//                .fetchOne();
     }
 
     @Override
